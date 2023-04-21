@@ -1,6 +1,6 @@
 ﻿/*
- * [Your Title]
- * by Your Name, Date
+ * [Abenteuer in Lyrania]
+ * by Julian Schmidt, 20.04.2023
  *  
  * This work is a derivative of 
  * "C# Adventure Game" by http://programmingisfun.com, used under CC BY.
@@ -19,19 +19,7 @@ namespace Abenteuer_in_Lyrania
     {
         static void Main()
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            string title = @"                                                                                                                                            
-  ,---.  ,--.                    ,--.                                   ,--.            ,--.                                   ,--.         
- /  O  \ |  |-.  ,---. ,--,--, ,-'  '-. ,---. ,--.,--. ,---. ,--.--.    `--',--,--,     |  |   ,--. ,--.,--.--. ,--,--.,--,--, `--' ,--,--. 
-|  .-.  || .-. '| .-. :|      \'-.  .-'| .-. :|  ||  || .-. :|  .--'    ,--.|      \    |  |    \  '  / |  .--'' ,-.  ||      \,--.' ,-.  | 
-|  | |  || `-' |\   --.|  ||  |  |  |  \   --.'  ''  '\   --.|  |       |  ||  ||  |    |  '--.  \   '  |  |   \ '-'  ||  ||  ||  |\ '-'  | 
-`--' `--' `---'  `----'`--''--'  `--'   `----' `----'  `----'`--'       `--'`--''--'    `-----'.-'  /   `--'    `--`--'`--''--'`--' `--`--' 
-                                                                                               `---'                                        ";
-
-            Console.WriteLine(title);
-            Console.ResetColor();
-            Console.WriteLine("Drücke Enter zum starten.");
-            Console.ReadLine();
+            StartScreen.BildschirmAusgabe();
             Game.StartGame();
             Console.ReadLine();
         }

@@ -40,7 +40,7 @@ namespace Abenteuer_in_Lyrania
             Console.WriteLine("Du siehst einen älteren Mann, welcher gerade dabei ist, Samen zu säen. Er sieht dich ebenfalls und kommt auf dich zu.");
             BauerDialog("\"Servus! Hab' dich gar nich' geseh'n. Wo kommst'n du her? Wenn du hier bleiben willst schnapp dir ein paar Samen,\n ansonsten geh runter von mei'm Feld!\"", "green", out bauerEntscheidung);
 
-
+            EndGame();
         }
 
         static void PlayerCharacter()
@@ -78,6 +78,7 @@ namespace Abenteuer_in_Lyrania
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Du hast dich dafür entschieden dem Bauern zu helfen. Du erhältst eine Goldmünze!");
+
                     Console.ResetColor();
                     Gold += 1;
                     entscheidung = "JA";
@@ -113,6 +114,7 @@ namespace Abenteuer_in_Lyrania
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Der Bauer verscheucht dich mit seiner Mistgabel. Du rennst so schnell wie du kannst, bis du in einer Höhle ankommst.\n Als du kurz verschnauft hast bemerkst du, dass überall an den Höhlenwänden Blaue Steine leuchten.");
+                Console.ResetColor();
             }
         }
 
@@ -149,5 +151,11 @@ namespace Abenteuer_in_Lyrania
             Console.Write($"Gold: {gold}");
             Console.ResetColor();
         }*/
+
+        public static void EndGame()
+        {
+            Console.WriteLine($"Herzlichen Glückwunsch, {playerName}, dein Abenteuer ist zuende. Du hast {Gold} Gold gesammelt!");
+            Console.WriteLine("Drücke Enter zum beenden.");
+        }
     }
 }
