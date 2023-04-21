@@ -19,6 +19,7 @@ namespace Abenteuer_in_Lyrania
     {
         static void Main()
         {
+            //Console.SetWindowSize(200, 100);
             StartScreen.BildschirmAusgabe();
             Game.StartGame();
             Console.ReadLine();

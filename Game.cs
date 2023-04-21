@@ -118,7 +118,7 @@ namespace Abenteuer_in_Lyrania
                 else if (input == "NEIN")
                 {
                     SystemAusgabe.Anweisung("Du sagst lediglich deinen Namen und dass du nicht genau weißt, wo du bist und wie du hier her gekommen bist.");
-                    CharakterNautilus.NautilusText($"Oh, {playerName} heißt du also? Komischer Name, den hab' ich hier noch nie gehört. Wie dem auch sei,\ndu hast mir sehr geholfen, dafür Schuld' ich dir was.\nDu hast zwar schon 'n Gold von mir bekommen, aber das reicht nich', um dich zu vergüt'n.\nWenn du möchtest, darfst du hier schlaf'n und dich ausruh'n, was zu Ess'n kann ich dir auch anbiet'n!");
+                    CharakterNautilus.NautilusText($"Oh, {playerName} heißt du also? Komischer Name, den hab' ich hier noch nie gehört. Wie dem auch sei,\ndu hast mir sehr geholfen, dafür Schuld' ich dir was.\nDu hast zwar schon 'n Gold von mir bekommen, aber das reicht nich', um dich zu vergüt'n.\nWenn du möchtest, darfst du hier schlaf'n und dich ausruh'n, was zu Ess'n kann ich dir auch anbiet'n! Mein Name is' übrigens {nautilusName}.");
                 }
             }
             else if (entscheidung == "NEIN")
@@ -136,6 +136,7 @@ namespace Abenteuer_in_Lyrania
 
         public static void HUD(string playerName, string location, List<string> Inventar, int gold)
         {
+            Console.CursorVisible = false;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("=================================================================================");
@@ -157,12 +158,13 @@ namespace Abenteuer_in_Lyrania
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("=================================================================================\n\n\n\n");
             Console.ResetColor();
+            Console.CursorVisible = true;
         }
 
         public static void UpdateHUD(string playerName, string Location, List<string> Inventar, int Gold)
         {
-            int currentLeft = Console.CursorLeft;
-            int currentTop = Console.CursorTop;
+            int currentLeft = Console.WindowLeft + Console.CursorLeft;
+            int currentTop = Console.WindowTop + Console.CursorTop;
             HUD(playerName, Location, Inventar, Gold);
         }
 
