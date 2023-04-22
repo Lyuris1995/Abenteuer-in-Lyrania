@@ -13,6 +13,7 @@ namespace Abenteuer_in_Lyrania
         static public string playerName = "";
         static public string Location = "Startzone";
         static public string nautilusName = "Nautilus";
+        static public string reiseZiel = "";
         static public int Gold = 0;
 
         public static void StartGame()
@@ -39,6 +40,8 @@ namespace Abenteuer_in_Lyrania
                 FrostHöhle(Inventar);
             }
             WeiteresVorgehen(Inventar);
+            
+
 
 
             EndGame();
@@ -256,7 +259,28 @@ namespace Abenteuer_in_Lyrania
                             SystemAusgabe.Anweisung("");
                         }
                         break;
+                    
+                    case "REISEN" :
+                    case "TELEPORTIEREN" :
+                    case "TELEPORT" :
+                    case "FLIEGEN" :
+                        ReiseZiel(reiseZiel, Inventar);
+                        break;
                 }
+            }
+        }
+
+        public static void ReiseZiel(string reiseZiel, List<string> Inventar)
+        {
+            SystemAusgabe.Anweisung("Wohin möchtest du Reisen?");
+            reiseZiel = Console.ReadLine().ToUpper();
+            if (reiseZiel == "FROSTHÖHLE" || reiseZiel == "HÖHLE")
+            {
+                FrostHöhle(Inventar);
+            }
+            else if (reiseZiel == "NAUTILUS" || reiseZiel == "NAUTILUS HÜTTE" || reiseZiel == "BAUER" || reiseZiel == "HÜTTE")
+            {
+
             }
         }
 
