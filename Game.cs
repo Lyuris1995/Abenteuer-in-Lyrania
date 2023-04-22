@@ -129,7 +129,7 @@ namespace Abenteuer_in_Lyrania
         static void FrostHöhle(List<string> Inventar)
         {
             Location = "Frosthöhle";
-            HUD(playerName, Location, Inventar, Gold);
+            UpdateHUD(3, Inventar);
             SystemAusgabe.Anweisung("Du befindest dich nun vor einer Höhle mit Blauen Steinen, die überall an den Wänden hängen. Was möchtest du tun?");
             bool restartSwitch = true;
 
@@ -205,7 +205,8 @@ namespace Abenteuer_in_Lyrania
 
             if (nautilusHilfe == true)
             {
-                CharakterNautilus.NautilusText("Ah, da biste ja wieder! Kann ich irgendwas für dich tun?");
+                CharakterNautilus.NautilusText("Ah, da biste ja wieder! Ich muss dir was erzählen. Ich habe gehört, dass es in dem Dorf da unten, Rodermark heißt es, eine Kapelle gibt, in der wohl ein besonderes Artefakt versteckt wird. Vielleicht hilft dir das Artefakt ja herauszufinden, wo du her kommst.");
+                WeiteresVorgehen(Inventar);
             }
             else if (nautilusHilfe == true && Inventar.Contains("Baal's Amulett"))
             {
@@ -235,23 +236,53 @@ namespace Abenteuer_in_Lyrania
 
                 }
             }
-            else
+            else if (nautilusHilfe == false)
             {
                 CharakterNautilus.NautilusText("Du schon wieder? Hast's dir anders überlegt und willst mir doch zur Hand geh'n?");
                 SystemAusgabe.Anweisung("Möchtest du dem alten Mann beim säen der Samen helfen?");
                 string input = UserInput();
                 if (input == "JA")
                 {
-                    CharakterNautilus.NautilusText("Na super, dann los, nimm dir ");
+                    Gold += 1;
+                    UpdateHUD(3, Inventar);
+                    nautilusHilfe = true;
+                    CharakterNautilus.NautilusText($"Na super, dann los, nimm dir ein paar Samen und fang an! Mein Name ist übrigens {nautilusName}");
+                    SystemAusgabe.Anweisung("Du hilfst Nautilus beim säen. Er gibt dir 1 Gold als Dank.");
                 }
                 else
                 {
                     CharakterNautilus.NautilusText("NA DANN HAU ENDLICH AB!!!");
-                    SystemAusgabe.Anweisung("... Der alte Mann verscheucht dich wieder mit seiner Mistgabel. Du landest wieder vor der Frosthöhle.");
+                    SystemAusgabe.Anweisung("... Der alte Mann verscheucht dich mit seiner Mistgabel. Du landest wieder vor der Frosthöhle.");
                     FrostHöhle(Inventar);
                 }
             }
 
+        }
+
+        static void Rodermark(List<string> Inventar)
+        {
+            Location = "Rodermark";
+            UpdateHUD(3, Inventar);
+            SystemAusgabe.Anweisung("Du bist jetzt in Rodermark. Was möchtest du tun?");
+            string input = UserInput();
+            if (input == "ERKUNDEN" || input == "UMSEHEN" || input == "UMSCHAUEN")
+            {
+                SystemAusgabe.Anweisung("Ein nettes kleines Dorf. Du siehst eine Kapelle und ein Gasthaus, ansonsten nichts besonderes.");
+                Rodermark(Inventar);
+            }
+            else if (input == "GASTHAUS")
+            {
+                SystemAusgabe.Anweisung("Du betrittst das Gasthaus. Außer ein paar älteren Herrschaften ist hier nicht viel los. An der Theke steht eine Junge Frau, sie scheint die Schankwirtin zu sein. Möchtest du mit ihr reden?");
+                input = UserInput();
+                if (input == "JA")
+                {
+
+                }
+                else if (input == "NEIN")
+                {
+
+                }
+            }
         }
 
         static void WeiteresVorgehen(List<string> Inventar)
@@ -264,6 +295,7 @@ namespace Abenteuer_in_Lyrania
                 switch (input)
                 {
                     case "UMSEHEN":
+                    case "UMSCHAUEN":
                         if (Location == "Nautilus' Hütte")
                         {
                             SystemAusgabe.Anweisung("Du siehst dich um und siehst eine große Stadt in der ferne, sowie ein kleineres Dorf, etwas näher. Außerdem siehst du nicht weit entfernt eine große Höhle.");
@@ -284,7 +316,7 @@ namespace Abenteuer_in_Lyrania
                         break;
 
                     case "ERKUNDEN":
-                        if (Location == "Nautilus Hütte")
+                        if (Location == "Nautilus' Hütte")
                         {
                             SystemAusgabe.Anweisung("Du wühlst in Nautilus' sachen rum, außer seiner alten Unterhose findest du aber nichts interessantes.");
 
@@ -340,6 +372,11 @@ namespace Abenteuer_in_Lyrania
             {
                 Console.Clear();
                 NautilusHütte(Inventar);
+            }
+            else if (reiseZiel == "RODERMARK" || reiseZiel == "DORF" || reiseZiel == "KLEINES DORF")
+            {
+                Console.Clear();
+                Rodermark(Inventar);
             }
         }
 
