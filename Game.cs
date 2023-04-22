@@ -72,9 +72,8 @@ namespace Abenteuer_in_Lyrania
 
             while (true)
             {
-                string input = "";
                 SystemAusgabe.Anweisung($"Du musst nun deine erste Entscheidung treffen, {playerName}. Willst du dem Bauern helfen? ");;
-                input = Console.ReadLine().ToUpper();
+                string input = UserInput();
                 UpdateHUD(3, Inventar);
 
                 if (input == "JA")
@@ -131,16 +130,16 @@ namespace Abenteuer_in_Lyrania
         {
             Location = "Frosthöhle";
             HUD(playerName, Location, Inventar, Gold);
-            string input = "";
             SystemAusgabe.Anweisung("Du befindest dich nun vor einer Höhle mit Blauen Steinen, die überall an den Wänden hängen. Was möchtest du tun?");
             bool restartSwitch = true;
 
             while(restartSwitch)
             {
-                input = Console.ReadLine().ToUpper();
+                string input = UserInput();
                 switch (input) 
                 {
                     case "ERKUNDEN":
+                    case "UMSEHEN":
 
                         if (!Inventar.Contains("Kalter Stein"))
                         {
@@ -154,7 +153,7 @@ namespace Abenteuer_in_Lyrania
                         }
 
                         SystemAusgabe.Anweisung("Möchtest du dich noch weiter in der Höhle umschauen?");
-                        input = Console.ReadLine().ToUpper();
+                        input = UserInput();
                         switch (input)
                         {
                             case "JA":
@@ -201,16 +200,15 @@ namespace Abenteuer_in_Lyrania
 
         static void WeiteresVorgehen(List<string> Inventar)
         {
-            string input = "";
             bool restartSwitch = true;
-            SystemAusgabe.Anweisung("Wie möchtest du weiter vorgehen?");
             while (restartSwitch)
             {
-                input = Console.ReadLine().ToUpper();
+                SystemAusgabe.Anweisung("Wie möchtest du weiter vorgehen?");
+                string input = UserInput();
                 switch (input)
                 {
                     case "UMSEHEN":
-                        if (Location == "Nautilus Hütte")
+                        if (Location == "Nautilus' Hütte")
                         {
                             SystemAusgabe.Anweisung("Du siehst dich um und siehst eine große Stadt in der ferne, sowie ein kleineres Dorf, etwas näher. Außerdem siehst du nicht weit entfernt eine große Höhle.");
                         }
@@ -238,7 +236,7 @@ namespace Abenteuer_in_Lyrania
                         else if (Location == "Frosthöhle")
                         {
                             SystemAusgabe.Anweisung("Möchtest du in die Frosthöhle gehen?");
-                            input = Console.ReadLine().ToUpper();
+                            input = UserInput();
                             if (input == "JA")
                             {
                                 restartSwitch = false;
@@ -259,7 +257,10 @@ namespace Abenteuer_in_Lyrania
                             SystemAusgabe.Anweisung("");
                         }
                         break;
-                    
+
+                    case "HILFE":
+                        SystemAusgabe.Anweisung($"Du kannst mit Hilfe von verschiedenen Eingaben weiter fortfahren. Mit \"Erkunden\", oder \"Umsehen\" erhältst du immer Hilfreiche Hinweise zu deiner aktuellen Position. Außerdem kannst du mit dem Befehl \"Reisen\" an bestimmte Orte Reisen.");
+                            break;
                     case "REISEN" :
                     case "TELEPORTIEREN" :
                     case "TELEPORT" :
@@ -270,13 +271,14 @@ namespace Abenteuer_in_Lyrania
             }
         }
 
-        public static void ReiseZiel(string reiseZiel, List<string> Inventar)
+        static void ReiseZiel(string reiseZiel, List<string> Inventar)
         {
-            SystemAusgabe.Anweisung("Wohin möchtest du Reisen?");
-            reiseZiel = Console.ReadLine().ToUpper();
+            SystemAusgabe.Anweisung("Wohin möchtest du Reisen? Du kannst an folgende Orte Reisen: Nautilus Hütte, Frosthöhle, Rodermark, ");
+            reiseZiel = UserInput();
             if (reiseZiel == "FROSTHÖHLE" || reiseZiel == "HÖHLE")
             {
                 FrostHöhle(Inventar);
+                Console.Clear();
             }
             else if (reiseZiel == "NAUTILUS" || reiseZiel == "NAUTILUS HÜTTE" || reiseZiel == "BAUER" || reiseZiel == "HÜTTE")
             {
@@ -284,7 +286,13 @@ namespace Abenteuer_in_Lyrania
             }
         }
 
-        public static void HUD(string playerName, string location, List<string> Inventar, int gold)
+        static string UserInput()
+        {
+            string input = Console.ReadLine().ToUpper();
+            return input;
+        }
+
+        static void HUD(string playerName, string location, List<string> Inventar, int gold)
         {
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.White;
@@ -318,7 +326,7 @@ namespace Abenteuer_in_Lyrania
             Console.CursorVisible = true;
         }
 
-        public static void UpdateHUD(int spacing, List<string> Inventar)
+        static void UpdateHUD(int spacing, List<string> Inventar)
         {
             HUD(playerName, Location, Inventar, Gold);
             Console.Clear();
@@ -328,7 +336,7 @@ namespace Abenteuer_in_Lyrania
             }
         }
 
-        public static void EndGame()
+        static void EndGame()
         {
             SystemAusgabe.Anweisung($"Herzlichen Glückwunsch, {playerName}, dein Abenteuer ist zuende. Du hast {Gold} Gold gesammelt!");
             SystemAusgabe.Anweisung("Drücke Enter zum beenden.");
