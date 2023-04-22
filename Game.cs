@@ -15,6 +15,7 @@ namespace Abenteuer_in_Lyrania
         static public string nautilusName = "Nautilus";
         static public string reiseZiel = "";
         static public bool nautilusHilfe = false;
+        static public bool geldbörse = true;
         static public int Gold = 0;
 
         public static void StartGame()
@@ -78,13 +79,10 @@ namespace Abenteuer_in_Lyrania
 
                 if (input == "JA")
                 {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("Du hast dich dafür entschieden dem Bauern zu helfen. Du erhältst eine Goldmünze!");
-
-                    Console.ResetColor();
                     Gold += 1;
                     nautilusHilfe = true;
                     UpdateHUD(3, Inventar);
+                    SystemAusgabe.Anweisung("Du hast dich dafür entschieden dem Bauern zu helfen. Du erhältst eine Goldmünze!");
                     break;
                 }
                 else if (input == "NEIN")
@@ -267,7 +265,15 @@ namespace Abenteuer_in_Lyrania
             string input = UserInput();
             if (input == "ERKUNDEN" || input == "UMSEHEN" || input == "UMSCHAUEN")
             {
-                SystemAusgabe.Anweisung("Ein nettes kleines Dorf. Du siehst eine Kapelle und ein Gasthaus, ansonsten nichts besonderes.");
+                if (geldbörse == true)
+                {
+                    Gold += 5;
+                    geldbörse = false;
+                    UpdateHUD(3, Inventar);
+                    SystemAusgabe.Anweisung("Heute ist dein Glückstag, da lag eine geldbörse mit 5 Goldmünzen auf dem Boden!");
+                }
+                SystemAusgabe.Anweisung("Ein nettes kleines Dorf. Du siehst eine Kapelle und ein Gasthaus, ansonsten nichts besonderes. (Drücke Enter zum fortfahren.)");
+                Console.ReadLine();
                 Rodermark(Inventar);
             }
             else if (input == "GASTHAUS")
@@ -276,7 +282,33 @@ namespace Abenteuer_in_Lyrania
                 input = UserInput();
                 if (input == "JA")
                 {
+                    Schankwirtin.WirtinText("Oh, Hallöchen, du scheinst neu hier zu sein. Kann ich dir etwas anbieten?");
+                    SystemAusgabe.Anweisung("Was möchtest du tun?");
+                    bool resetSwitch = true;
+                    while (resetSwitch)
+                    {
+                        input = UserInput();
+                        switch (input)
+                        {
+                            case "BESTELLEN":
+                            case "BIER":
+                            case "TRINKEN":
+                                Schankwirtin.WirtinText("Sehr gerne, ein Bier kostet 1 Gold, soll ich dir ein Bier bringen?");
+                                input = UserInput();
+                                if (input == "JA" && Gold >= 1)
+                                {
+                                    Gold -= 1;
+                                    resetSwitch = false;
+                                    UpdateHUD(3, Inventar);
+                                    Schankwirtin.WirtinText("Hier bitteschön, ich hoffe es Mundet! Kann ich sonst noch etwas für dich tun?");
+                                }
+                                break;
 
+                            case "REDEN":
+                                Schankwirtin.WirtinText("Du kommst nur zum reden hier her?");
+                                break;
+                        }
+                    }
                 }
                 else if (input == "NEIN")
                 {
