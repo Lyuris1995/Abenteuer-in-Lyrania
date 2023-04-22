@@ -22,16 +22,12 @@ namespace Abenteuer_in_Lyrania
             List<string> Inventar = new List<string>();
             string bauerEntscheidung = "";
 
-            //int currentLeft = Console.CursorLeft;
-            //int currentTop = Console.CursorTop;
-            HUD(playerName, Location, Inventar, Gold);
-            //Console.SetCursorPosition(currentLeft, currentTop);
-
-
             Console.Title = "Abenteuer in Lyrania";
 
+            UpdateHUD(3, Inventar);
             Console.WriteLine("Willkommen, Abenteurer!");
             Console.WriteLine("Du wirst gleich nach Lyrania reisen, mach dich bereit.");
+            HUD(playerName, Location, Inventar, Gold);
             PlayerCharacter(Inventar);
             Console.WriteLine("Plötzlich hörst du eine rauschende Stimme ertönen. Es ist Dunkel und du siehst nur den Umriss dieser Person. Es sieht so aus, als ob sie Flügel habe.");
             SystemDialog("Du wirst nun nach Lyrania beschworen. Dein Abenteuer beginnt!");
@@ -52,12 +48,12 @@ namespace Abenteuer_in_Lyrania
         {
             Console.WriteLine("Bitte gib deinen Namen ein: ");
             playerName = Console.ReadLine();
+            HUD(playerName, Location, Inventar, Gold);
             Console.WriteLine($"Deine Name lautet nun: {playerName}");
             if (playerName == "Lyuris")
             {
                 Inventar.Add("Flügel der Reinheit");
             }
-            HUD(playerName, Location, Inventar, Gold);
         }
 
         static void SystemDialog(string message)
@@ -76,6 +72,7 @@ namespace Abenteuer_in_Lyrania
                 string input = "";
                 SystemAusgabe.Anweisung($"Du musst nun deine erste Entscheidung treffen, {playerName}. Willst du dem Bauern helfen? ");;
                 input = Console.ReadLine().ToUpper();
+                UpdateHUD(3, Inventar);
 
                 if (input == "JA")
                 {
@@ -141,9 +138,17 @@ namespace Abenteuer_in_Lyrania
                 switch (input) 
                 {
                     case "ERKUNDEN":
-                    SystemAusgabe.Anweisung("In der Höhle sind viele leuchtende Steine. Als du einen berührst merkst du,\ndass diese sehr Kalt sind! Du steckst einen dieser Steine ein, man kann ja nie wissen...");
-                    Inventar.Add("Kalter Stein");
-                    HUD(playerName, Location, Inventar, Gold);
+
+                        if (!Inventar.Contains("Kalter Stein"))
+                        {
+                            SystemAusgabe.Anweisung("In der Höhle sind viele leuchtende Steine. Als du einen berührst merkst du,\ndass diese sehr Kalt sind! Du steckst einen dieser Steine ein, man kann ja nie wissen...");
+                            Inventar.Add("Kalter Stein");
+                            HUD(playerName, Location, Inventar, Gold);
+                        }
+                        else
+                        {
+                            SystemAusgabe.Anweisung("Hier liegen noch mehr dieser kalten Steine herum. Es wäre unnötig, noch mehr mit zu nehmen.");
+                        }
 
                         SystemAusgabe.Anweisung("Möchtest du dich noch weiter in der Höhle umschauen?");
                         input = Console.ReadLine().ToUpper();
@@ -160,10 +165,12 @@ namespace Abenteuer_in_Lyrania
                                         SystemAusgabe.Anweisung("Du benutzt deine Flügel, um zur Decke der Höhle zu fliegen. Du findest ein Rot leuchtendes Amulett! Fühlt sich irgendwie seltsam an... Auf der Rückseite ist etwas eingraviert: \"Baal\".");
                                         Inventar.Add("Baal's Amulett");
                                         HUD(playerName, Location, Inventar, Gold);
+                                        WeiteresVorgehen(Inventar);
                                     }
                                     else
                                     {
                                         SystemAusgabe.Anweisung("Leider kommst du da nicht dran. Du solltest später wieder kommen.");
+                                        WeiteresVorgehen(Inventar);
                                     }
                                 }
                                 else
@@ -202,17 +209,52 @@ namespace Abenteuer_in_Lyrania
                     case "UMSEHEN":
                         if (Location == "Nautilus Hütte")
                         {
-                            SystemAusgabe.Anweisung("Deine Aktuelle Position: Du siehst dich um und siehst eine große Stadt in der ferne, sowie ein kleineres Dorf, etwas näher. Außerdem siehst du nicht weit entfernt eine große Höhle.");
+                            SystemAusgabe.Anweisung("Du siehst dich um und siehst eine große Stadt in der ferne, sowie ein kleineres Dorf, etwas näher. Außerdem siehst du nicht weit entfernt eine große Höhle.");
                         }
                         else if (Location == "Frosthöhle")
                         {
-                            SystemAusgabe.Anweisung("");
+                            SystemAusgabe.Anweisung("Du siehst dich um und siehst eine große Stadt in der ferne, sowie ein kleineres Dorf, etwas näher. Außerdem siehst du nicht weit entfernt die Hütte von Nautilus.");
                         }
-                        
+                        else if (Location == "Rodermark")
+                        {
+                            SystemAusgabe.Anweisung("Du siehst dich um und siehst eine große Stadt, nicht weit entfernt von dir. Außerdem siehst du etwas weiter entfernt die Hütte von Nautilus. Die Höhle kannst du von hier aus auch erkennen.");
+                        }
+                        else if (Location == "Stadt")
+                        {
+                            SystemAusgabe.Anweisung("Du siehst dich um und siehst ein kleines Dorf, nicht weit entfernt von dir. Außerdem siehst in weiter ferne die Hütte von Nautilus. Die Höhle kannst du von hier aus gerado so erkennen.");
+                        }
+
                         break;
 
                     case "ERKUNDEN":
-                        SystemAusgabe.Anweisung("");
+                        if (Location == "Nautilus Hütte")
+                        {
+                            SystemAusgabe.Anweisung("Du wühlst in Nautilus' sachen rum, außer seiner alten Unterhose findest du aber nichts interessantes.");
+
+                        }
+                        else if (Location == "Frosthöhle")
+                        {
+                            SystemAusgabe.Anweisung("Möchtest du in die Frosthöhle gehen?");
+                            input = Console.ReadLine().ToUpper();
+                            if (input == "JA")
+                            {
+                                restartSwitch = false;
+                                FrostHöhle(Inventar);
+                            }
+                            else
+                            {
+                                restartSwitch = false;
+                                WeiteresVorgehen(Inventar);
+                            }
+                        }
+                        else if (Location == "Rodermark")
+                        {
+                            SystemAusgabe.Anweisung("");
+                        }
+                        else if (Location == "Stadt")
+                        {
+                            SystemAusgabe.Anweisung("");
+                        }
                         break;
                 }
             }
@@ -250,6 +292,16 @@ namespace Abenteuer_in_Lyrania
 
             Console.ResetColor();
             Console.CursorVisible = true;
+        }
+
+        public static void UpdateHUD(int spacing, List<string> Inventar)
+        {
+            HUD(playerName, Location, Inventar, Gold);
+            Console.Clear();
+            for (int i = 0; i < spacing; i++)
+            {
+                Console.WriteLine("");
+            }
         }
 
         public static void EndGame()
