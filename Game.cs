@@ -14,6 +14,7 @@ namespace Abenteuer_in_Lyrania
         static public string Location = "Startzone";
         static public string nautilusName = "Nautilus";
         static public string reiseZiel = "";
+        static public bool nautilusHilfe = false;
         static public int Gold = 0;
 
         public static void StartGame()
@@ -21,7 +22,6 @@ namespace Abenteuer_in_Lyrania
             string Location = "Startzone";
             int Gold = 0;
             List<string> Inventar = new List<string>();
-            string bauerEntscheidung = "";
 
             Console.Title = "Abenteuer in Lyrania";
 
@@ -34,8 +34,8 @@ namespace Abenteuer_in_Lyrania
             SystemDialog("Du wirst nun nach Lyrania beschworen. Dein Abenteuer beginnt!");
             Console.WriteLine("Dir wird schwarz vor Augen... Als du aufwachst, findest du dich auf einer riesigen großen Wiese unter einem Baum wieder.");
             Console.WriteLine("Du siehst einen älteren Mann, welcher gerade dabei ist, Samen zu säen. Er sieht dich ebenfalls und kommt auf dich zu.");
-            NautilusDialog("\"Servus! Hab' dich gar nich' geseh'n. Wo kommst'n du her? Wenn du hier bleiben willst schnapp dir ein paar Samen,\n ansonsten geh runter von mei'm Feld!\"", out bauerEntscheidung, Inventar);
-            if (bauerEntscheidung == "NEIN")
+            NautilusDialog("Servus! Hab' dich gar nich' geseh'n. Wo kommst'n du her? Wenn du hier bleiben willst schnapp dir ein paar Samen,\n ansonsten geh runter von mei'm Feld!", Inventar);
+            if (nautilusHilfe == false)
             {
                 FrostHöhle(Inventar);
             }
@@ -66,7 +66,7 @@ namespace Abenteuer_in_Lyrania
             Console.ResetColor();
         }
 
-        static void NautilusDialog(string message, out string entscheidung, List<string> Inventar)
+        static void NautilusDialog(string message, List<string> Inventar)
         {
             CharakterNautilus.NautilusText(message);
 
@@ -83,14 +83,14 @@ namespace Abenteuer_in_Lyrania
 
                     Console.ResetColor();
                     Gold += 1;
-                    entscheidung = "JA";
-                    HUD(playerName, Location, Inventar, Gold);
+                    nautilusHilfe = true;
+                    UpdateHUD(3, Inventar);
                     break;
                 }
                 else if (input == "NEIN")
                 {
                     SystemAusgabe.Anweisung("Du hast dich dagegen entschieden dem Bauern zu helfen.");
-                    entscheidung = "NEIN";
+                    nautilusHilfe = false;
                     HUD(playerName, Location, Inventar, Gold);
                     break;
                 }
@@ -100,7 +100,7 @@ namespace Abenteuer_in_Lyrania
                 }
             }
 
-            if (entscheidung == "JA")
+            if (nautilusHilfe == true)
             {
                 CharakterNautilus.NautilusText($"Komm, wir gehen erst mal in meine Hütte. Mein Name ist übrigens {nautilusName}");
                 Location = "Nautilus' Hütte";
@@ -119,7 +119,7 @@ namespace Abenteuer_in_Lyrania
                     CharakterNautilus.NautilusText($"Oh, {playerName} heißt du also? Komischer Name, den hab' ich hier noch nie gehört. Wie dem auch sei,\ndu hast mir sehr geholfen, dafür Schuld' ich dir was.\nDu hast zwar schon 'n Gold von mir bekommen, aber das reicht nich', um dich zu vergüt'n.\nWenn du möchtest, darfst du hier schlaf'n und dich ausruh'n, was zu Ess'n kann ich dir auch anbiet'n!");
                 }
             }
-            else if (entscheidung == "NEIN")
+            else if (nautilusHilfe == false)
             {
                 CharakterNautilus.NautilusText("Dann mach dass du verschwindest! Ich hab' keine Zeit für so'n faulen Typ wie dich!");
                 SystemAusgabe.Anweisung("Der Bauer verscheucht dich mit seiner Mistgabel. Du rennst so schnell wie du kannst, bis du in einer Höhle ankommst.");      
@@ -198,6 +198,62 @@ namespace Abenteuer_in_Lyrania
             }
         }
 
+        static void NautilusHütte(List<string> Inventar)
+        {
+            Location = "Nautilus' Hütte";
+            UpdateHUD(3, Inventar);
+
+            if (nautilusHilfe == true)
+            {
+                CharakterNautilus.NautilusText("Ah, da biste ja wieder! Kann ich irgendwas für dich tun?");
+            }
+            else if (nautilusHilfe == true && Inventar.Contains("Baal's Amulett"))
+            {
+                CharakterNautilus.NautilusText("WOW, da in deiner Tasche leuchtet was, ist das etwa...?");
+                SystemAusgabe.Anweisung("Möchtest du Nautilus Baal's Amulett zeigen?");
+                string input = UserInput();
+                if (input == "JA")
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            else if (nautilusHilfe == false && Inventar.Contains("Baal's Amulett"))
+            {
+                CharakterNautilus.NautilusText("Du schon wieder? Moment, ich spüre eine Unheilvolle Energie bei dir... kann es sein...?");
+                SystemAusgabe.Anweisung("Möchtest du dem alten Mann Baal's Amulett zeigen?");
+                string input = UserInput();
+                if (input == "JA")
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                CharakterNautilus.NautilusText("Du schon wieder? Hast's dir anders überlegt und willst mir doch zur Hand geh'n?");
+                SystemAusgabe.Anweisung("Möchtest du dem alten Mann beim säen der Samen helfen?");
+                string input = UserInput();
+                if (input == "JA")
+                {
+                    CharakterNautilus.NautilusText("Na super, dann los, nimm dir ");
+                }
+                else
+                {
+                    CharakterNautilus.NautilusText("NA DANN HAU ENDLICH AB!!!");
+                    SystemAusgabe.Anweisung("... Der alte Mann verscheucht dich wieder mit seiner Mistgabel. Du landest wieder vor der Frosthöhle.");
+                    FrostHöhle(Inventar);
+                }
+            }
+
+        }
+
         static void WeiteresVorgehen(List<string> Inventar)
         {
             bool restartSwitch = true;
@@ -265,24 +321,25 @@ namespace Abenteuer_in_Lyrania
                     case "TELEPORTIEREN" :
                     case "TELEPORT" :
                     case "FLIEGEN" :
-                        ReiseZiel(reiseZiel, Inventar);
+                        ReiseZiel(Inventar);
                         break;
                 }
             }
         }
 
-        static void ReiseZiel(string reiseZiel, List<string> Inventar)
+        static void ReiseZiel(List<string> Inventar)
         {
             SystemAusgabe.Anweisung("Wohin möchtest du Reisen? Du kannst an folgende Orte Reisen: Nautilus Hütte, Frosthöhle, Rodermark, ");
             reiseZiel = UserInput();
             if (reiseZiel == "FROSTHÖHLE" || reiseZiel == "HÖHLE")
             {
-                FrostHöhle(Inventar);
                 Console.Clear();
+                FrostHöhle(Inventar);
             }
-            else if (reiseZiel == "NAUTILUS" || reiseZiel == "NAUTILUS HÜTTE" || reiseZiel == "BAUER" || reiseZiel == "HÜTTE")
+            else if (reiseZiel == "NAUTILUS" || reiseZiel == "NAUTILUS HÜTTE" || reiseZiel == "BAUER" || reiseZiel == "HÜTTE" || reiseZiel == "NAUTILUS' HÜTTE")
             {
-
+                Console.Clear();
+                NautilusHütte(Inventar);
             }
         }
 
@@ -328,8 +385,8 @@ namespace Abenteuer_in_Lyrania
 
         static void UpdateHUD(int spacing, List<string> Inventar)
         {
-            HUD(playerName, Location, Inventar, Gold);
             Console.Clear();
+            HUD(playerName, Location, Inventar, Gold);
             for (int i = 0; i < spacing; i++)
             {
                 Console.WriteLine("");

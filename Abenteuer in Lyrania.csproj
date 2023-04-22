@@ -45,8 +45,6 @@
   <ItemGroup>
     <Compile Include="CharakterNautilus.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="PossibleInputs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartScreen.cs" />
