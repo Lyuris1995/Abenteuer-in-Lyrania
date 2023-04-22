@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,8 +37,11 @@ namespace Abenteuer_in_Lyrania
             SystemDialog("Du wirst nun nach Lyrania beschworen. Dein Abenteuer beginnt!");
             Console.WriteLine("Dir wird schwarz vor Augen... Als du aufwachst, findest du dich auf einer riesigen großen Wiese unter einem Baum wieder.");
             Console.WriteLine("Du siehst einen älteren Mann, welcher gerade dabei ist, Samen zu säen. Er sieht dich ebenfalls und kommt auf dich zu.");
-            BauerDialog("\"Servus! Hab' dich gar nich' geseh'n. Wo kommst'n du her? Wenn du hier bleiben willst schnapp dir ein paar Samen,\n ansonsten geh runter von mei'm Feld!\"", "green", out bauerEntscheidung, Inventar);
-            
+            NautilusDialog("\"Servus! Hab' dich gar nich' geseh'n. Wo kommst'n du her? Wenn du hier bleiben willst schnapp dir ein paar Samen,\n ansonsten geh runter von mei'm Feld!\"", "green", out bauerEntscheidung, Inventar);
+            if (bauerEntscheidung == "NEIN")
+            {
+                FrostHöhle(Inventar);
+            }
 
 
             EndGame();
@@ -62,7 +66,7 @@ namespace Abenteuer_in_Lyrania
             Console.ResetColor();
         }
 
-        static void BauerDialog(string message, string color, out string entscheidung, List<string> Inventar)
+        static void NautilusDialog(string message, string color, out string entscheidung, List<string> Inventar)
         {
             CharakterNautilus.NautilusText(message);
 
@@ -88,20 +92,16 @@ namespace Abenteuer_in_Lyrania
                 }
                 else if (input == "NEIN")
                 {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("Du hast dich dagegen entschieden dem Bauern zu helfen.");
-                    Console.ResetColor();
+                    SystemAusgabe.Anweisung("Du hast dich dagegen entschieden dem Bauern zu helfen.");
                     entscheidung = "NEIN";
-                    Inventar.Add("Schwert");
+                    //Inventar.Add("Schwert");
                     Location = "Frosthöhle";
                     UpdateHUD(playerName, Location, Inventar, Gold);
                     break;
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("Antworte bitte mit Ja oder Nein!");
-                    Console.ResetColor();
+                    SystemAusgabe.Anweisung("Antworte bitte mit Ja oder Nein!");
                 }
             }
 
@@ -123,14 +123,57 @@ namespace Abenteuer_in_Lyrania
             }
             else if (entscheidung == "NEIN")
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Dann mach dass du verschwindest! Ich hab' keine Zeit für so'n faulen Typ wie dich!");
-                Console.ResetColor();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Der Bauer verscheucht dich mit seiner Mistgabel. Du rennst so schnell wie du kannst, bis du in einer Höhle ankommst.\n Als du kurz verschnauft hast bemerkst du, dass überall an den Höhlenwänden Blaue Steine leuchten.");
-                Console.ResetColor();
-                Console.WriteLine("Du findest ein Schwert auf dem Boden der Höhle!");
+                CharakterNautilus.NautilusText("Dann mach dass du verschwindest! Ich hab' keine Zeit für so'n faulen Typ wie dich!");
+                SystemAusgabe.Anweisung("Der Bauer verscheucht dich mit seiner Mistgabel. Du rennst so schnell wie du kannst, bis du in einer Höhle ankommst.\n Als du kurz verschnauft hast bemerkst du, dass überall an den Höhlenwänden Blaue Steine leuchten.");
+                //SystemAusgabe.Anweisung("Du findest ein Schwert auf dem Boden der Höhle!");
                 
+            }
+        }
+
+        static void FrostHöhle(List<string> Inventar)
+        {
+            string input = Console.ReadLine();
+            SystemAusgabe.Anweisung("Du befindest dich nun vor der Höhle mit den Blauen kristallen, die überall an den Wänden hängen. Was möchtest du tun?");
+            bool restartSwitch = true;
+
+            while(restartSwitch)
+            {
+                input = Console.ReadLine().ToUpper();
+                switch (input) 
+                {
+                    case "ERKUNDEN":
+                    SystemAusgabe.Anweisung("In der Höhle sind viele leuchtende Steine. Als du einen berührst merkst du,\ndass diese sehr Kalt sind! Du steckst einen dieser Steine ein, man kann ja nie wissen...");
+                    Inventar.Add("Kalter Stein");
+                        SystemAusgabe.Anweisung("Möchtest du dich noch weiter in der Höhle umschauen?");
+                        input = Console.ReadLine().ToUpper();
+                        switch (input)
+                        {
+                            case "JA":
+                                SystemAusgabe.Anweisung("An der Höhlendecke leuchtet etwas Rotes.");
+                                if (Inventar.Contains("Flügel der Reinheit"))
+                                {
+                                    SystemAusgabe.Anweisung("Du benutzt deine Flügel, um zur Decke der Höhle zu fliegen. Du findest ein Rot leuchtendes Amulett! Fühlt sich irgendwie seltsam an... Auf der Rückseite ist etwas eingraviert: \"Baal\".");
+                                    Inventar.Add("Baal's Amulett");
+                                }
+                                else
+                                {
+                                    SystemAusgabe.Anweisung("Leider kommst du da nicht dran. Du solltest später wieder kommen.");
+                                }
+                                break;
+
+                            case "NEIN":
+                                SystemAusgabe.Anweisung("");
+                                break;
+                        }
+                        restartSwitch = false;
+                        break;
+
+                    case "ÜBERLEGEN":
+                    case "NACHDENKEN":
+                    case "DENKEN":
+                        SystemAusgabe.Anweisung("Die Steine an den Höhlenwänden sehen interessant aus. Du brauchst nicht einmal ein Werkzeug, um diese mit zu nehmen, wie es scheint.");
+                        break;
+                }  
             }
         }
 
@@ -170,8 +213,8 @@ namespace Abenteuer_in_Lyrania
 
         public static void EndGame()
         {
-            Console.WriteLine($"Herzlichen Glückwunsch, {playerName}, dein Abenteuer ist zuende. Du hast {Gold} Gold gesammelt!");
-            Console.WriteLine("Drücke Enter zum beenden.");
+            SystemAusgabe.Anweisung($"Herzlichen Glückwunsch, {playerName}, dein Abenteuer ist zuende. Du hast {Gold} Gold gesammelt!");
+            SystemAusgabe.Anweisung("Drücke Enter zum beenden.");
         }
     }
 }
