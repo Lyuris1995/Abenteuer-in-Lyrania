@@ -1,10 +1,6 @@
 ﻿/*
  * [Abenteuer in Lyrania]
  * by Julian Schmidt, 20.04.2023
- *  
- * This work is a derivative of 
- * "C# Adventure Game" by http://programmingisfun.com, used under CC BY.
- * https://creativecommons.org/licenses/by/4.0/
  */
 
 using System;

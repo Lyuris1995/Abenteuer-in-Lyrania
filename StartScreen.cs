@@ -26,6 +26,7 @@ namespace Abenteuer_in_Lyrania
             Console.ResetColor();
             Console.WriteLine("Drücke Enter zum starten.");
             Console.ReadLine();
+            Console.Clear();
         }
     }
 }
