@@ -201,24 +201,32 @@ namespace Abenteuer_in_Lyrania
             Location = "Nautilus' Hütte";
             UpdateHUD(3, Inventar);
 
-            if (nautilusHilfe == true)
-            {
-                CharakterNautilus.NautilusText("Ah, da biste ja wieder! Ich muss dir was erzählen. Ich habe gehört, dass es in dem Dorf da unten, Rodermark heißt es, eine Kapelle gibt, in der wohl ein besonderes Artefakt versteckt wird. Vielleicht hilft dir das Artefakt ja herauszufinden, wo du her kommst.");
-                WeiteresVorgehen(Inventar);
-            }
-            else if (nautilusHilfe == true && Inventar.Contains("Baal's Amulett"))
+            if (nautilusHilfe == true && Inventar.Contains("Baal's Amulett"))
             {
                 CharakterNautilus.NautilusText("WOW, da in deiner Tasche leuchtet was, ist das etwa...?");
                 SystemAusgabe.Anweisung("Möchtest du Nautilus Baal's Amulett zeigen?");
                 string input = UserInput();
                 if (input == "JA")
                 {
+                    CharakterNautilus.NautilusText($"Du hast Baal's Amulett gefunden?! Das ist nicht gut... Du musst dieses Amulett gut beschützen, hörst du {playerName}? Baal ist ein Dämon, welcher unser Land vor Jahrhunderten heimgesucht hat. Er konnte nur durch sehr viele verluste in der großen Höhle versiegelt werden. Seitdem traut sich niemand mehr auch nur in die Nähe dieser Höhle.");
+                    SystemAusgabe.Anweisung("Möchtest du Nautilus verraten, wo du das Amulett gefunden hast?");
+                    input = UserInput();
+                    if (input == "JA")
+                    {
+                        CharakterNautilus.NautilusText("Was?! Du hast das Amulett an der DECKE in der Frosthöhle gefunden? Wie zum Teufel gerät ein Amulett an die Decke einer Eisigen Höhle?! Hör mal Junge, ich glaube hier ist etwas ganz großes im Gange. Du solltest in die Stadt gehen und einem der Paladine dies alles erzählen. Vielleicht haben die eine Ahnung, was hier vorgeht.");
 
+                    }
                 }
                 else
                 {
-
+                    CharakterNautilus.NautilusText("Hmpf, dann eben nicht. Ich dachte, wir können einander vertrauen.");
+                    SystemAusgabe.Anweisung("Nautilus sieht ziemlich enttäuscht aus.");
                 }
+            }
+            else if (nautilusHilfe == true)
+            {
+                CharakterNautilus.NautilusText("Ah, da biste ja wieder! Ich muss dir was erzählen. Ich habe gehört, dass es in dem Dorf da unten, Rodermark heißt es, eine Kapelle gibt, in der wohl ein besonderes Artefakt versteckt wird. Vielleicht hilft dir das Artefakt ja herauszufinden, wo du her kommst.");
+                WeiteresVorgehen(Inventar);
             }
             else if (nautilusHilfe == false && Inventar.Contains("Baal's Amulett"))
             {
