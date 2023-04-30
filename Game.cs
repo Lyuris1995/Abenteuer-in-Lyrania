@@ -352,6 +352,29 @@ namespace Abenteuer_in_Lyrania
                     {
                         case 1:
                             resetSwitch = false;
+                            SystemAusgabe.Anweisung("Du betrittst die Kapelle. In der Kapelle steht ein Alter Mann in einer Opulenten Robe. Möchtest du mit ihm sprechen?");
+                            SystemAusgabe.Anweisung("1) Ja / 2) Nein");
+                            input = UserInput();
+                            if (input == 1)
+                            {
+                                Priester.Dialog("Oh, Willkommen in unserer Kapelle, Reisender. Kann ich dir irgendwie behilflich sein?");
+                                SystemAusgabe.Anweisung("1) Nach dem Artefakt fragen / 2) Weg gehen");
+                                input = UserInput();
+                                if (input == 1)
+                                {
+                                    Priester.Dialog("Artefakt? Ich weiß nicht, was du meinst. Ich habe jetzt auch keine Zeit, um mit dir zu reden. Wenn du mich bitte entschuldigen würdest.");
+                                    SystemAusgabe.Anweisung("Der Priester verlässt die Kapelle. Du bist nun ganz alleine hier, hinter dem Altar kannst du eine Tür erkennen. Möchtest du dich der Tür nähern?");
+                                    SystemAusgabe.Anweisung("1) Ja / 2) Nein");
+                                    input = UserInput();
+                                    if (input == 1 && Inventar.Contains("Kapellenschlüssel"))
+                                    {
+                                        Inventar.Add("Flügel der Reinheit");
+                                        UpdateHUD(3, Inventar);
+                                        SystemAusgabe.Anweisung("Du öffnest die Tür mit deinem Kapellenschlüssel. Dahinter befindet sich ein Raum, in welchem weiß leuchtende Flügel liegen. Du steckst die Flügel ein, das muss das Artefakt sein, von dem dir erzählt wurde.");
+
+                                    }
+                                }
+                            }
                             break;
 
                         case 2:
