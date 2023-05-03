@@ -68,10 +68,10 @@ namespace Abenteuer_in_Lyrania
                 SystemAusgabe.Anweisung($"Du musst nun deine erste Entscheidung treffen, {playerName}. Willst du dem Bauern helfen? ");
                 SystemAusgabe.Anweisung("Tippe 1) für Ja und 2) für Nein");
                 SystemAusgabe.Anweisung("Hinweis: Solche Entscheidungen müssen immer wieder während deines Abenteuers getroffen werden. Bestätige deine Entscheidung immer mit der Enter-Taste, damit dein Abenteuer weiter gehen kann.");
-                int input = UserInput();
+                int inputNautiHilfe = UserInput();
                 UpdateHUD(3, Inventar);
 
-                if (input == 1)
+                if (inputNautiHilfe == 1)
                 {
                     Gold += 1;
                     nautilusHilfe = true;
@@ -79,7 +79,7 @@ namespace Abenteuer_in_Lyrania
                     SystemAusgabe.Anweisung("Du hast dich dafür entschieden dem Bauern zu helfen. Du erhältst eine Goldmünze!");
                     break;
                 }
-                else if (input == 2)
+                else if (inputNautiHilfe == 2)
                 {
                     SystemAusgabe.Anweisung("Du hast dich dagegen entschieden dem Bauern zu helfen.");
                     nautilusHilfe = false;
@@ -96,13 +96,13 @@ namespace Abenteuer_in_Lyrania
                 CharakterNautilus.NautilusText("Vielen Dank, dass du mir geholfen hast. Is' nich' selbstverständlich, weißte? Ich war ziemlich gemein zu dir,\ndas tut mir Leid. Würdest du mir verraten, wo du her kommst?");
                 SystemAusgabe.Anweisung("Möchtest du dem Bauern verraten, wo du her kommst?");
                 SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                int input = UserInput();
-                if (input == 1)
+                int inputNautiHerkunft = UserInput();
+                if (inputNautiHerkunft == 1)
                 {
                     SystemAusgabe.Anweisung("Du erzählst dem Bauern alles, deinen Namen, wo du ursprünglich herkommst und dass du keine Ahnung hast,\n wie du hier her gekommen bist, außer, dass da ein Wesen mit Flügeln war.");
                     CharakterNautilus.NautilusText($"m-m-m-Moment, langsam jetz'! Du heißt {playerName}, kommst aus einem Land namens \"Deutschland\" und wurdest von einem Wes'n mit Flügeln hergebracht?\nDas klingt alles ziemlich aufregend und ich hab' keine Ahnung, was das alles bedeutet. Aber du hast mir geholfen und mir vertraut,\ndafür Schulde ich dir was. Wenn du möchtest, darfst du gerne hier schlafen.\nFreut mich, dich kennen zu lernen!");
                 }
-                else if (input == 2)
+                else if (inputNautiHerkunft == 2)
                 {
                     SystemAusgabe.Anweisung("Du sagst lediglich deinen Namen und dass du nicht genau weißt, wo du bist und wie du hier her gekommen bist.");
                     CharakterNautilus.NautilusText($"Oh, {playerName} heißt du also? Komischer Name, den hab' ich hier noch nie gehört. Wie dem auch sei,\ndu hast mir sehr geholfen, dafür Schuld' ich dir was.\nDu hast zwar schon 'n Gold von mir bekommen, aber das reicht nich', um dich zu vergüt'n.\nWenn du möchtest, darfst du hier schlaf'n und dich ausruh'n, was zu Ess'n kann ich dir auch anbiet'n!");
@@ -125,8 +125,8 @@ namespace Abenteuer_in_Lyrania
 
             while(restartSwitch)
             {
-                int input = UserInput();
-                switch (input) 
+                int inputFrosthöhleErkundung = UserInput();
+                switch (inputFrosthöhleErkundung) 
                 {
                     case 1:
 
@@ -143,8 +143,8 @@ namespace Abenteuer_in_Lyrania
 
                         SystemAusgabe.Anweisung("Möchtest du dich noch weiter in der Höhle umschauen?");
                         SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                        input = UserInput();
-                        switch (input)
+                        inputFrosthöhleErkundung = UserInput();
+                        switch (inputFrosthöhleErkundung)
                         {
                             case 1:
 
@@ -196,13 +196,13 @@ namespace Abenteuer_in_Lyrania
                 CharakterNautilus.NautilusText("WOW, da in deiner Tasche leuchtet was, ist das etwa...?");
                 SystemAusgabe.Anweisung("Möchtest du Nautilus Baal's Amulett zeigen?");
                 SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                int input = UserInput();
-                if (input == 1)
+                int inputNautilusHütte = UserInput();
+                if (inputNautilusHütte == 1)
                 {
                     CharakterNautilus.NautilusText($"Du hast Baal's Amulett gefunden?! Das ist nicht gut... Du musst dieses Amulett gut beschützen, hörst du {playerName}? Baal ist ein Dämon, welcher unser Land vor Jahrhunderten heimgesucht hat. Er konnte nur durch sehr viele verluste in der großen Höhle versiegelt werden. Seitdem traut sich niemand mehr auch nur in die Nähe dieser Höhle.");
                     SystemAusgabe.Anweisung("Möchtest du Nautilus verraten, wo du das Amulett gefunden hast?");
-                    input = UserInput();
-                    if (input == 1)
+                    inputNautilusHütte = UserInput();
+                    if (inputNautilusHütte == 1)
                     {
                         CharakterNautilus.NautilusText("Was?! Du hast das Amulett an der DECKE in der Frosthöhle gefunden? Wie zum Teufel gerät ein Amulett an die Decke einer Eisigen Höhle?! Hör mal Junge, ich glaube hier ist etwas ganz großes im Gange. Du solltest in die Stadt gehen und einem der Paladine dies alles erzählen. Vielleicht haben die eine Ahnung, was hier vorgeht.");
 
@@ -224,8 +224,8 @@ namespace Abenteuer_in_Lyrania
                 CharakterNautilus.NautilusText("Du schon wieder? Moment, ich spüre eine Unheilvolle Energie bei dir... kann es sein...?");
                 SystemAusgabe.Anweisung("Möchtest du dem alten Mann Baal's Amulett zeigen?");
                 SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                int input = UserInput();
-                if (input == 1)
+                int inputNautilusHütte = UserInput();
+                if (inputNautilusHütte == 1)
                 {
 
                 }
@@ -239,8 +239,8 @@ namespace Abenteuer_in_Lyrania
                 CharakterNautilus.NautilusText("Du schon wieder? Hast's dir anders überlegt und willst mir doch zur Hand geh'n?");
                 SystemAusgabe.Anweisung("Möchtest du dem alten Mann beim säen der Samen helfen?");
                 SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                int input = UserInput();
-                if (input == 1)
+                int inputNautilusHütte = UserInput();
+                if (inputNautilusHütte == 1)
                 {
                     Gold += 1;
                     UpdateHUD(3, Inventar);
@@ -248,7 +248,7 @@ namespace Abenteuer_in_Lyrania
                     CharakterNautilus.NautilusText($"Na super, dann los, nimm dir ein paar Samen und fang an! Mein Name ist übrigens {nautilusName}");
                     SystemAusgabe.Anweisung("Du hilfst Nautilus beim säen. Er gibt dir 1 Gold als Dank.");
                 }
-                else if (input == 2)
+                else if (inputNautilusHütte == 2)
                 {
                     CharakterNautilus.NautilusText("NA DANN HAU ENDLICH AB!!!");
                     SystemAusgabe.Anweisung("... Der alte Mann verscheucht dich mit seiner Mistgabel. Du landest wieder vor der Frosthöhle.");
@@ -264,8 +264,8 @@ namespace Abenteuer_in_Lyrania
             UpdateHUD(3, Inventar);
             SystemAusgabe.Anweisung("Du bist jetzt in Rodermark. Was möchtest du tun?");
             SystemAusgabe.Anweisung("1) Umsehen / 2) Ins Gasthaus gehen");
-            int input = UserInput();
-            if (input == 1)
+            int inputRodermark = UserInput();
+            if (inputRodermark == 1)
             {
                 if (geldbörse == true)
                 {
@@ -278,12 +278,12 @@ namespace Abenteuer_in_Lyrania
                 Console.ReadLine();
                 Rodermark(Inventar);
             }
-            else if (input == 2)
+            else if (inputRodermark == 2)
             {
                 SystemAusgabe.Anweisung("Du betrittst das Gasthaus. Außer ein paar älteren Herrschaften ist hier nicht viel los. An der Theke steht eine Junge Frau, sie scheint die Schankwirtin zu sein. Möchtest du mit ihr reden?");
                 SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                input = UserInput();
-                if (input == 1)
+                inputRodermark = UserInput();
+                if (inputRodermark == 1)
                 {
                     Schankwirtin.WirtinText("Oh, Hallöchen, du scheinst neu hier zu sein. Kann ich dir etwas anbieten?");
                     SystemAusgabe.Anweisung("Was möchtest du tun?");
@@ -291,21 +291,21 @@ namespace Abenteuer_in_Lyrania
                     bool resetSwitch = true;
                     while (resetSwitch)
                     {
-                        input = UserInput();
-                        switch (input)
+                        inputRodermark = UserInput();
+                        switch (inputRodermark)
                         {
                             case 1:
                                 Schankwirtin.WirtinText("Sehr gerne, ein Bier kostet 1 Gold, soll ich dir ein Bier bringen?");
                                 SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                                input = UserInput();
-                                if (input == 1 && Gold >= 1)
+                                inputRodermark = UserInput();
+                                if (inputRodermark == 1 && Gold >= 1)
                                 {
                                     Gold -= 1;
                                     resetSwitch = false;
                                     UpdateHUD(3, Inventar);
                                     Schankwirtin.WirtinText("Hier bitteschön, ich hoffe es Mundet! Kann ich sonst noch etwas für dich tun?");
                                 }
-                                else if (input == 2 || Gold < 1)
+                                else if (inputRodermark == 2 || Gold < 1)
                                 {
                                     resetSwitch = false;
                                     Schankwirtin.WirtinText("Oh, wie es scheint hast du nicht genügend Gold bei dir. Vielleicht solltest du dich mal in der gegend umsehen, ob du jemandem für etwas Gold helfen kannst?");
@@ -318,7 +318,7 @@ namespace Abenteuer_in_Lyrania
                         }
                     }
                 }
-                else if (input == 2)
+                else if (inputRodermark == 2)
                 {
                     SystemAusgabe.Anweisung("Du verlässt das Gasthaus wieder.");
                 }
@@ -332,8 +332,8 @@ namespace Abenteuer_in_Lyrania
             {
                 SystemAusgabe.Anweisung("Wie möchtest du weiter vorgehen?");
                 SystemAusgabe.Anweisung("1) Umsehen / 2) Gegend Erkunden 3) Weiter Reisen");
-                int input = UserInput();
-                switch (input)
+                int inputWeiteresVorgehen = UserInput();
+                switch (inputWeiteresVorgehen)
                 {
                     case 1:
                         if (Location == "Nautilus' Hütte")
@@ -365,13 +365,13 @@ namespace Abenteuer_in_Lyrania
                         {
                             SystemAusgabe.Anweisung("Möchtest du in die Frosthöhle gehen?");
                             SystemAusgabe.Anweisung("1) Ja / 2) Nein");
-                            input = UserInput();
-                            if (input == 1)
+                            inputWeiteresVorgehen = UserInput();
+                            if (inputWeiteresVorgehen == 1)
                             {
                                 restartSwitch = false;
                                 FrostHöhle(Inventar);
                             }
-                            else if (input == 2)
+                            else if (inputWeiteresVorgehen == 2)
                             {
                                 restartSwitch = false;
                                 WeiteresVorgehen(Inventar);
@@ -398,28 +398,34 @@ namespace Abenteuer_in_Lyrania
         static void ReiseZiel(List<string> Inventar)
         {
             SystemAusgabe.Anweisung("Wohin möchtest du Reisen? Du kannst an folgende Orte Reisen: 1) Frosthöhle 2) Nautilus' Hütte 3) Rodermark 4) Kernstadt");
-            if (UserInput() == 1)
+            int inputReiseZiel = UserInput();
+            if (inputReiseZiel == 1)
             {
                 Console.Clear();
                 FrostHöhle(Inventar);
             }
-            else if (UserInput() == 2)
+            else if (inputReiseZiel == 2)
             {
                 Console.Clear();
                 NautilusHütte(Inventar);
             }
-            else if (UserInput() == 3)
+            else if (inputReiseZiel == 3)
             {
                 Console.Clear();
                 Rodermark(Inventar);
+            }
+            else if (inputReiseZiel == 4)
+            {
+                Console.Clear();
+
             }
         }
 
         static int UserInput()
         {
-            string input = Console.ReadLine();
+            string inputUser = Console.ReadLine();
             int value;
-            if (int.TryParse(input, out value))
+            if (int.TryParse(inputUser, out value))
             {
                 return value;
             }
