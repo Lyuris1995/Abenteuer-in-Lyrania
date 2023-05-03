@@ -15,6 +15,7 @@ namespace Abenteuer_in_Lyrania
         static public string nautilusName = "Nautilus";
         static public bool nautilusHilfe = false;
         static public bool geldbörse = true;
+        static public bool bierGekauft = false;
         static public int Gold = 0;
 
         public static void StartGame()
@@ -302,6 +303,7 @@ namespace Abenteuer_in_Lyrania
                                 {
                                     Gold -= 1;
                                     resetSwitch = false;
+                                    bierGekauft = true;
                                     UpdateHUD(3, Inventar);
                                     Schankwirtin.WirtinText("Hier bitteschön, ich hoffe es Mundet! Kann ich sonst noch etwas für dich tun?");
                                 }
@@ -314,6 +316,21 @@ namespace Abenteuer_in_Lyrania
 
                             case 2:
                                 Schankwirtin.WirtinText("Du kommst nur zum reden hier her?");
+                                SystemAusgabe.Anweisung("1) Ja / 2) Nein");
+                                input = UserInput();
+                                if (input == 1 && bierGekauft == true)
+                                {
+                                    resetSwitch = false;
+                                    Schankwirtin.WirtinText("Ich habe gehört, dass es in der Kapelle ein besonderes Artefakt gibt. Es sollen Schwingen oder ähnliches sein, was es wohl damit auf sich hat?");
+                                }
+                                else if (input == 1 && bierGekauft == false)
+                                {
+                                    Schankwirtin.WirtinText("Leider bieten wir \"Reden\" nicht in unserem Sortiment an. Wenn du ein Bier kaufen möchtest, könnte das vielleicht meine Lippen lockern.");
+                                }
+                                else if (input == 2)
+                                {
+                                    Schankwirtin.WirtinText("Okay, dann eben nicht. :(");
+                                }
                                 break;
                         }
                     }
@@ -321,6 +338,60 @@ namespace Abenteuer_in_Lyrania
                 else if (inputRodermark == 2)
                 {
                     SystemAusgabe.Anweisung("Du verlässt das Gasthaus wieder.");
+                }
+            }
+            else if (input == 3)
+            {
+                SystemAusgabe.Anweisung("Du stehst vor der Kapelle. Hier ist reges treiben, du sieht ein paar Priester miteinander reden. Was möchtest du tun?");
+                SystemAusgabe.Anweisung("1) Kapelle betreten / 2) Mit den Priestern reden / 3) Umsehen / 4) Weg gehen");
+                input = UserInput();
+                bool resetSwitch = true;
+                while (resetSwitch)
+                {
+                    switch (input)
+                    {
+                        case 1:
+                            resetSwitch = false;
+                            SystemAusgabe.Anweisung("Du betrittst die Kapelle. In der Kapelle steht ein Alter Mann in einer Opulenten Robe. Möchtest du mit ihm sprechen?");
+                            SystemAusgabe.Anweisung("1) Ja / 2) Nein");
+                            input = UserInput();
+                            if (input == 1)
+                            {
+                                Priester.Dialog("Oh, Willkommen in unserer Kapelle, Reisender. Kann ich dir irgendwie behilflich sein?");
+                                SystemAusgabe.Anweisung("1) Nach dem Artefakt fragen / 2) Weg gehen");
+                                input = UserInput();
+                                if (input == 1)
+                                {
+                                    Priester.Dialog("Artefakt? Ich weiß nicht, was du meinst. Ich habe jetzt auch keine Zeit, um mit dir zu reden. Wenn du mich bitte entschuldigen würdest.");
+                                    SystemAusgabe.Anweisung("Der Priester verlässt die Kapelle. Du bist nun ganz alleine hier, hinter dem Altar kannst du eine Tür erkennen. Möchtest du dich der Tür nähern?");
+                                    SystemAusgabe.Anweisung("1) Ja / 2) Nein");
+                                    input = UserInput();
+                                    if (input == 1 && Inventar.Contains("Kapellenschlüssel"))
+                                    {
+                                        Inventar.Add("Flügel der Reinheit");
+                                        UpdateHUD(3, Inventar);
+                                        SystemAusgabe.Anweisung("Du öffnest die Tür mit deinem Kapellenschlüssel. Dahinter befindet sich ein Raum, in welchem weiß leuchtende Flügel liegen. Du steckst die Flügel ein, das muss das Artefakt sein, von dem dir erzählt wurde.");
+
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 2:
+                            break;
+
+                        case 3:
+                            resetSwitch = false;
+                            Inventar.Add("Kapellenschlüssel");
+                            UpdateHUD(3, Inventar);
+                            SystemAusgabe.Anweisung("Das Kapellengebäude glänzt irgendwie ganz schön... Oh, da liegt ein Schlüssel? Du steckst ihn Sicherheitshalber ein, bevor ihn jemand anders nimt.");
+                            break;
+
+                        case 4:
+                            Rodermark(Inventar);
+                            resetSwitch = false;
+                            break;
+                    }
                 }
             }
         }
@@ -397,19 +468,19 @@ namespace Abenteuer_in_Lyrania
 
         static void ReiseZiel(List<string> Inventar)
         {
+            int input = UserInput();
             SystemAusgabe.Anweisung("Wohin möchtest du Reisen? Du kannst an folgende Orte Reisen: 1) Frosthöhle 2) Nautilus' Hütte 3) Rodermark 4) Kernstadt");
-            int inputReiseZiel = UserInput();
-            if (inputReiseZiel == 1)
+            if (UserInput() == 1)
             {
                 Console.Clear();
                 FrostHöhle(Inventar);
             }
-            else if (inputReiseZiel == 2)
+            else if (UserInput() == 2)
             {
                 Console.Clear();
                 NautilusHütte(Inventar);
             }
-            else if (inputReiseZiel == 3)
+            else if (UserInput() == 3)
             {
                 Console.Clear();
                 Rodermark(Inventar);
@@ -446,7 +517,7 @@ namespace Abenteuer_in_Lyrania
             int savedCursorTop = Console.CursorTop;
 
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine("=================================================================================");
+            Console.WriteLine("==================================================================================================================");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("    " + playerName);
@@ -463,7 +534,7 @@ namespace Abenteuer_in_Lyrania
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(gold + " gold\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("=================================================================================\n\n\n\n");
+            Console.WriteLine("==================================================================================================================\n\n\n\n");
 
             Console.SetCursorPosition(savedCursorLeft, savedCursorTop);
 
